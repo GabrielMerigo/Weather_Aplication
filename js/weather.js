@@ -33,21 +33,3 @@ const getCityWeather = async cityName => {
 
 getCityWeather('São Paulo')
   .then(console.log)
-
-
-// const getCityWeather = async cityName => {
-//   try {
-//     const responseNotOK = !response.ok;
-
-//     if(responseNotOK){
-//       throw new Error('Ocorreu um erro na busca dos dados...')
-//     }
-
-//     const [cityWeatherData] = await response.json()
-//     return cityWeatherData
-//   } catch ({ name, message}) {
-//     console.log(`${name}: ${message}`);
-//   }
-// }
-
-// getCityWeather('Porto Alegre')
