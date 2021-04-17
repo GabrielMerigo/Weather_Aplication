@@ -18,6 +18,15 @@ const insertIMGIntoCard = IsDayTime => {
   IsDayTime ? timeImg.src = './src/day.svg' : timeImg.src = './src/night.svg'
 }
 
+const insertIMGIconIntoCard = WeatherIcon => {
+  const timeIcon = `<img src="src/icons/${WeatherIcon}.svg" />`
+  timeIconContainer.innerHTML = timeIcon; 
+}
+
+const insertDataWeatherIntoCard = (container, data) => {
+    container.textContent = data
+}
+
 const insertDataIntoDOM = async event => {
   event.preventDefault();
 
@@ -28,14 +37,11 @@ const insertDataIntoDOM = async event => {
 
   showCardIntoDOM()
   insertIMGIntoCard(IsDayTime)
-  
+  insertIMGIconIntoCard(WeatherIcon)
 
-  const timeIcon = `<img src="src/icons/${WeatherIcon}.svg" />`
-  timeIconContainer.innerHTML = timeIcon; 
-
-  cityWeatherContainer.textContent = WeatherText
-  cityNameContainer.textContent = LocalizedName
-  cityTemperatureContainer.textContent = Temperature.Metric.Value
+  insertDataWeatherIntoCard(cityWeatherContainer, WeatherText)
+  insertDataWeatherIntoCard(cityNameContainer, LocalizedName)
+  insertDataWeatherIntoCard(cityTemperatureContainer, Temperature.Metric.Value)
 
   form.reset()
 }
