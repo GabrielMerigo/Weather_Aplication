@@ -8,7 +8,17 @@ const timeIconContainer = document.querySelector('[data-js="time-icon" ]');
 
 let timeImg = document.querySelector('[data-js="time"]')
 
-form.addEventListener('submit', async event => {
+const showCardIntoDOM = () => {
+  if (cityCard.classList.contains('d-none')){
+    cityCard.classList.remove('d-none')
+  }
+}
+
+const insertIMGIntoCard = IsDayTime => {
+  IsDayTime ? timeImg.src = './src/day.svg' : timeImg.src = './src/night.svg'
+}
+
+const insertDataIntoDOM = async event => {
   event.preventDefault();
 
   const inputValue = event.target.city.value;
@@ -16,15 +26,9 @@ form.addEventListener('submit', async event => {
   const [{ WeatherText, Temperature, IsDayTime, WeatherIcon }] = 
     await (await getCityWeather(Key)).json()
 
-  if (cityCard.classList.contains('d-none')){
-    cityCard.classList.remove('d-none')
-  }
-
-  if(IsDayTime){
-    timeImg.src = './src/day.svg'
-  } else {
-    timeImg.src = './src/night.svg'
-  }
+  showCardIntoDOM()
+  insertIMGIntoCard(IsDayTime)
+  
 
   const timeIcon = `<img src="src/icons/${WeatherIcon}.svg" />`
   timeIconContainer.innerHTML = timeIcon; 
@@ -34,4 +38,6 @@ form.addEventListener('submit', async event => {
   cityTemperatureContainer.textContent = Temperature.Metric.Value
 
   form.reset()
-})
+}
+
+form.addEventListener('submit', insertDataIntoDOM)
