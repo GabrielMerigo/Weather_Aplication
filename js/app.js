@@ -23,8 +23,10 @@ const insertIMGIconIntoCard = WeatherIcon => {
   timeIconContainer.innerHTML = timeIcon; 
 }
 
-const insertDataWeatherIntoCard = (container, data) => {
-    container.textContent = data
+const insertDataWeatherIntoCard = (containers, data) => {
+  containers.forEach((container, index) => {
+    container.textContent = data[index]
+  })
 }
 
 const insertDataIntoDOM = async event => {
@@ -39,9 +41,14 @@ const insertDataIntoDOM = async event => {
   insertIMGIntoCard(IsDayTime)
   insertIMGIconIntoCard(WeatherIcon)
 
-  insertDataWeatherIntoCard(cityWeatherContainer, WeatherText)
-  insertDataWeatherIntoCard(cityNameContainer, LocalizedName)
-  insertDataWeatherIntoCard(cityTemperatureContainer, Temperature.Metric.Value)
+  const Containers = [
+    cityWeatherContainer, 
+    cityNameContainer, 
+    cityTemperatureContainer
+  ]
+
+  const dataWeather = [WeatherText, LocalizedName, Temperature.Metric.Value]
+  insertDataWeatherIntoCard(Containers, dataWeather)
 
   form.reset()
 }
