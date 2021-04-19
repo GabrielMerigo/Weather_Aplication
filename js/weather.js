@@ -32,7 +32,7 @@ const getCityWeather = async Key => {
       throw new Error('Não foi possível obter os dados da Requisição.')
     }
 
-    return response.json()
+    return await response.json()
   } catch (error) {
     console.log(error.message);
   }
