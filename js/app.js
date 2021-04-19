@@ -6,24 +6,35 @@ const cityTemperature = document.querySelector('[data-js="city-temperature"]');
 const IsDayOrNight = document.querySelector('[data-js="time"]');
 const timeIcon = document.querySelector('[data-js="time-icon"]');
 
-form.addEventListener('submit', async event => {
-  event.preventDefault()
+const insertIMGDayOrNight = IsDayTime => {
+  IsDayTime ? IsDayOrNight.src = `src/day.svg` : IsDayOrNight.src = `src/night.svg`;
+}
 
-  const inputValue = event.target.city.value;
+const showCard = () => {
+  if (cityCard.classList.contains('d-none')) {
+    cityCard.classList.remove('d-none');
+  }
+}
+
+const showDetailsWeatherCity = async inputValue => {
   const [{ Key }] = await getCityData(inputValue);
   const [{ IsDayTime, WeatherIcon, WeatherText, Temperature }] =
     await getCityWeather(Key)
 
-  if (cityCard.classList.contains('d-none')) {
-    cityCard.classList.remove('d-none');
-  }
-
-  IsDayTime ? IsDayOrNight.src = `src/day.svg` : IsDayOrNight.src = `src/night.svg`;
 
   timeIcon.innerHTML = `<img src="src/icons/${WeatherIcon}.svg"/>`
   cityName.textContent = inputValue;
   cityWeather.textContent = WeatherText;
   cityTemperature.textContent = Temperature.Metric.Value;
+  insertIMGDayOrNight(IsDayTime)
+}
 
+form.addEventListener('submit', event => {
+  event.preventDefault()
+
+  const inputValue = event.target.city.value;
+
+  showDetailsWeatherCity(inputValue)
+  showCard()
   form.reset()
 })
