@@ -18,7 +18,7 @@ const showCard = () => {
 
 form.addEventListener('submit', event => {
   event.preventDefault()
-
+  console.log('teste');
   const inputValue = event.target.city.value;
   const [{ Key }] = await getCityData(inputValue);
   const [{ IsDayTime, WeatherIcon, WeatherText, Temperature }] =
