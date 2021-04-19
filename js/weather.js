@@ -1,26 +1,32 @@
 const APIKey = 'ZofrLjsODdHgCAz4wpQqzXd1t6opYg3o';
-const baseUrl = 'http://dataservice.accuweather.com'
+const baseUrl = 'http://dataservice.accuweather.com';
 
-const getCityUrl = cityName =>
-  `${baseUrl}/locations/v1/cities/search?apikey=${APIKey}&q=${cityName}`
-
-const getWeatherURL = cityKey => 
-  `${baseUrl}/currentconditions/v1/${cityKey}?apikey=${APIKey}&language=pt-br`
-
-const fetchData = async url => {
+const getCityData = async cityName => {
   try {
-    const response = await fetch(url);
+    const response =
+      await fetch(`${baseUrl}/locations/v1/cities/search?apikey=${APIKey}&q=${cityName}`)
 
     if (!response.ok) {
-      throw new Error('Ocorreu um erro na busca dos dados...')
+      throw new Error('Falha na busca de dados...')
     }
 
     return response.json()
-  } catch ({ name, message }) {
-    console.log(`${name}: ${message}`);
+  } catch (error) {
+    console.log(error.message);
   }
 }
 
-const getCityData = cityName => fetchData(getCityUrl(cityName))
+const getCityWeather = async Key => {
+  try {
+    const response =
+      await fetch(`${baseUrl}/currentconditions/v1/${Key}?apikey=${APIKey}&language=pt-br`)
 
-const getCityWeather = cityKey => fetch(getWeatherURL(cityKey))
+    if (!response.ok) {
+      throw new Error('Não foi possível obter os dados da Requisição.')
+    }
+
+    return await response.json()
+  } catch (error) {
+    console.log(error.message);
+  }
+}

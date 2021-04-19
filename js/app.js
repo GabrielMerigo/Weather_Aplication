@@ -1,56 +1,29 @@
 const form = document.querySelector('[data-js="change-location"]');
-const cityWeatherContainer = document.querySelector('[data-js="city-weather"]')
-const cityNameContainer = document.querySelector('[data-js="city-name"]')
-const cityTemperatureContainer = document.
-  querySelector('[data-js="city-temperature"]');
 const cityCard = document.querySelector('[data-js="cityCard"]');
-const timeIconContainer = document.querySelector('[data-js="time-icon" ]');
+const cityName = document.querySelector('[data-js="city-name"]');
+const cityWeather = document.querySelector('[data-js="city-weather"]');
+const cityTemperature = document.querySelector('[data-js="city-temperature"]');
+const IsDayOrNight = document.querySelector('[data-js="time"]');
+const timeIcon = document.querySelector('[data-js="time-icon"]');
 
-let timeImg = document.querySelector('[data-js="time"]')
-
-const showCardIntoDOM = () => {
-  if (cityCard.classList.contains('d-none')){
-    cityCard.classList.remove('d-none')
-  }
-}
-
-const insertIMGIntoCard = IsDayTime => {
-  IsDayTime ? timeImg.src = './src/day.svg' : timeImg.src = './src/night.svg'
-}
-
-const insertIMGIconIntoCard = WeatherIcon => {
-  const timeIcon = `<img src="src/icons/${WeatherIcon}.svg" />`
-  timeIconContainer.innerHTML = timeIcon; 
-}
-
-const insertDataWeatherIntoCard = (containers, data) => {
-  containers.forEach((container, index) => {
-    container.textContent = data[index]
-  })
-}
-
-const insertDataIntoDOM = async event => {
-  event.preventDefault();
+form.addEventListener('submit', async event => {
+  event.preventDefault()
 
   const inputValue = event.target.city.value;
-  const [{ LocalizedName, Key }] = await getCityData(inputValue)
-  const [{ WeatherText, Temperature, IsDayTime, WeatherIcon }] = 
-    await (await getCityWeather(Key)).json()
+  const [{ Key }] = await getCityData(inputValue);
+  const [{ IsDayTime, WeatherIcon, WeatherText, Temperature }] =
+    await getCityWeather(Key)
 
-  showCardIntoDOM()
-  insertIMGIntoCard(IsDayTime)
-  insertIMGIconIntoCard(WeatherIcon)
+  if (cityCard.classList.contains('d-none')) {
+    cityCard.classList.remove('d-none');
+  }
 
-  const Containers = [
-    cityWeatherContainer, 
-    cityNameContainer, 
-    cityTemperatureContainer
-  ]
+  IsDayTime ? IsDayOrNight.src = `src/day.svg` : IsDayOrNight.src = `src/night.svg`;
 
-  const dataWeather = [WeatherText, LocalizedName, Temperature.Metric.Value]
-  insertDataWeatherIntoCard(Containers, dataWeather)
+  timeIcon.innerHTML = `<img src="src/icons/${WeatherIcon}.svg"/>`
+  cityName.textContent = inputValue;
+  cityWeather.textContent = WeatherText;
+  cityTemperature.textContent = Temperature.Metric.Value;
 
   form.reset()
-}
-
-form.addEventListener('submit', insertDataIntoDOM)
+})
