@@ -14,7 +14,7 @@ const getCityData = async cityName => {
       throw new Error('Falha na busca de dados...')
     }
 
-    return response.json()
+    return await response.json()
   } catch (error) {
     console.log(error.message);
   }
