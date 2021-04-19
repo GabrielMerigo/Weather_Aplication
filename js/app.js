@@ -34,7 +34,7 @@ form.addEventListener('submit', event => {
 
   const inputValue = event.target.city.value;
 
-  showDetailsWeatherCity(inputValue)
   showCard()
+  showDetailsWeatherCity(inputValue)
   form.reset()
 })
