@@ -10,19 +10,47 @@ const insertIMGDayOrNight = IsDayTime => {
   IsDayTime ? IsDayOrNight.src = `src/day.svg` : IsDayOrNight.src = `src/night.svg`;
 }
 
+const mostraOCartaoSeExisteLocalStorage = () => {
+  if (localStorage.getItem('variavelDeControle')) {
+    cityCard.classList.remove('d-none');
+
+    const iconStorage = localStorage.getItem('weatherIcon');
+    const cityNameStorage = localStorage.getItem('inputValue');
+    const weatherStorage = localStorage.getItem('cityWeather');
+    const temperatureStorage = localStorage.getItem('cityTemperature')
+    const IsDayTimeStorage = localStorage.getItem('isDayTime')
+
+    timeIcon.innerHTML = `<img src="src/icons/${iconStorage}.svg"/>`
+    cityName.textContent = cityNameStorage;
+    cityWeather.textContent = weatherStorage;
+    cityTemperature.textContent = temperatureStorage;
+    insertIMGDayOrNight(IsDayTimeStorage)
+  }
+}
+
 const showCard = () => {
   if (cityCard.classList.contains('d-none')) {
     cityCard.classList.remove('d-none');
   }
 }
 
-form.addEventListener('submit', event => {
+mostraOCartaoSeExisteLocalStorage()
+
+let variavelDeControle = 0;
+form.addEventListener('submit', async event => {
   event.preventDefault()
-  console.log('teste');
+  variavelDeControle++
   const inputValue = event.target.city.value;
   const [{ Key }] = await getCityData(inputValue);
   const [{ IsDayTime, WeatherIcon, WeatherText, Temperature }] =
     await getCityWeather(Key)
+
+  localStorage.setItem('inputValue', inputValue)
+  localStorage.setItem('cityWeather', WeatherText)
+  localStorage.setItem('cityTemperature', Temperature.Metric.Value)
+  localStorage.setItem('weatherIcon', WeatherIcon)
+  localStorage.setItem('isDayTime', IsDayTime)
+  localStorage.setItem('variavelDeControle', variavelDeControle)
 
   timeIcon.innerHTML = `<img src="src/icons/${WeatherIcon}.svg"/>`
   cityName.textContent = inputValue;
@@ -33,3 +61,5 @@ form.addEventListener('submit', event => {
   showCard()
   form.reset()
 })
+
+
